@@ -4,7 +4,7 @@ import '../models/user.dart';
 
 class UserService {
   static late User user;
-
+  static bool control = false;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final UserService _singleton = UserService._internal();
 
@@ -25,9 +25,11 @@ class UserService {
         print('reference: ${doc.reference}');
         if(doc['email'] == email) {
           UserService.user = User.fromFirestore(doc);
+          UserService.control =  true;
         }
       }
     });
+    UserService.control = false;
   }
   
   static void addUserDb(User user) async {

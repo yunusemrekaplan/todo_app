@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/task.dart';
 import '../models/user.dart';
 
+
 class TaskService {
   static late List<Task> tasks;
   late Task task;

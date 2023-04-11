@@ -17,7 +17,7 @@ class User {
     assert(data!['password'] != null);
 
     id = snapshot.reference;
-    tasks = data!['tasks'];
+    dbTasks = data!['tasks'];
     email = data['email'];
     password = data['password'];
   }
