@@ -4,7 +4,8 @@ import '../models/user.dart';
 
 class UserService {
   static late User user;
-  static bool control = false;
+  static late bool control;
+
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final UserService _singleton = UserService._internal();
 
@@ -14,22 +15,27 @@ class UserService {
 
   UserService._internal();
 
-  static User getUser() {
-    return UserService.user;
+  static Future<User?> getUser(String email) async {
+    getUserFromDb(email);
+    return user;
   }
-
-  static void getUserFromDb(String email) async {
+  static Future<User?> getUserFromDb(String email) async {
     await _firestore.collection('users').get().then((querySnapshot) {
       for(var doc in querySnapshot.docs) {
         print('id: ${doc.id}');
         print('reference: ${doc.reference}');
         if(doc['email'] == email) {
           UserService.user = User.fromFirestore(doc);
+          print(UserService.user.email);
           UserService.control =  true;
+          print(UserService.control);
+          return UserService.user;
         }
       }
     });
     UserService.control = false;
+    return null;
+
   }
   
   static void addUserDb(User user) async {

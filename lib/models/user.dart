@@ -5,7 +5,7 @@ class User {
   late DocumentReference id;
   late String email;
   late String password;
-  late List<DocumentReference> dbTasks;
+  late List<dynamic> dbTasks;
   List<Task> tasks = <Task>[];
 
   User({required this.email, required this.password});

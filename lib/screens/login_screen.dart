@@ -8,32 +8,31 @@ import 'package:todo_app/screens/tasks_screen.dart';
 
 
 class LoginScreen extends StatelessWidget {
-  late User user;
+  late Future<User?> user;
   LoginScreen({super.key});
 
   Duration get loginTime => const Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) {
+  Future<String?> _authUser(LoginData data) async {
     //print('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      UserService.getUserFromDb(data.name);
-      user = UserService.getUser();
-      if (UserService.control) {
+    return Future.delayed(loginTime).then((_) async {
+      //UserService.getUserFromDb(data.name);
+      user = UserService.getUserFromDb(data.name).then((value) => value);
+      if (user != null) {
         return 'Kullanıcı bulunamadı';
       }
-      if (user.password != data.password) {
+      if (user.then((value) => value?.password) != data.password) {
         return 'Şifre yanlış';
       }
       return null;
     });
   }
 
-  Future<String?> _createUser(SignupData data) {
+  Future<String?> _createUser(SignupData data) async {
     print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async {
-      UserService.getUserFromDb(data.name!);
-      user = UserService.getUser();
-      if (UserService.control) {
+      user = UserService.getUserFromDb(data.name!).then((value) => value);
+      if (user != null) {
         return 'Kullanıcı zaten var';
       }
       UserService.addUserDb(User(email: data.name!, password: data.password!));
