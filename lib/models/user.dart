@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_app/models/task.dart';
 
 class User {
   late DocumentReference id;
   late String email;
   late String password;
-  late List<dynamic> dbTasks;
-  List<Task> tasks = <Task>[];
+  late List<dynamic> tasks;
 
   User({required this.email, required this.password});
 
@@ -17,7 +15,7 @@ class User {
     assert(data!['password'] != null);
 
     id = snapshot.reference;
-    dbTasks = data!['tasks'];
+    tasks = data!['tasks'];
     email = data['email'];
     password = data['password'];
   }

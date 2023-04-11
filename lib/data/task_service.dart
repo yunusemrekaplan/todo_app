@@ -5,7 +5,7 @@ import '../models/user.dart';
 
 
 class TaskService {
-  static late List<Task> tasks;
+  List<Task> tasks = <Task>[];
   late Task task;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -17,21 +17,21 @@ class TaskService {
 
   TaskService._internal();
 
-  static List<Task> getTasks() {
-    return TaskService.tasks;
-  }
-
-  static void getTasksFromDb(User user) async {
+  void getTasksFromDb(User user) async {
     await _firestore.collection('tasks').get().then((querySnapshot) {
       for(var doc in querySnapshot.docs) {
-        if(user.dbTasks.contains(doc.reference)) {
-          user.tasks.add(Task.fromFirestore(doc));
+        print('---for');
+        if(user.tasks.contains(doc.reference)) {
+          print('---if');
+          tasks.add(Task.fromFirestore(doc));
         }
       }
+      print(tasks.length);
     });
   }
   
-  static void addTask(Task task) async {
+  void addTask(User user, Task task) async {
     await _firestore.collection('task').add(task.mapTask());
+    user.tasks.add(task.id);
   }
 }

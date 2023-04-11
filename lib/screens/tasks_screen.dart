@@ -2,46 +2,62 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
+import 'package:todo_app/data/user_service.dart';
 
-import '../models/task.dart';
 import 'login_screen.dart';
 
 class TasksScreen extends StatelessWidget {
-  late List<Task> tasks;
-  TasksScreen({super.key});
+  late UserService userService;
+  late TaskService taskService;
+
+  TasksScreen(this.userService, this.taskService, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Görev Listesi'),
+        title: const Text('Görev Listesi'),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app),
             onPressed: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+                builder: (context) => const LoginScreen(),
               ));
             },
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: TaskService.tasks.length,
+        itemCount: taskService.tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(tasks[index].title),
-            subtitle: Text(tasks[index].description),
-            trailing: Checkbox(
-              value: true,
-              onChanged: (value) {
+            title: Text(taskService.tasks[index].title),
+            subtitle: Text(taskService.tasks[index].description),
+            trailing: Expanded(
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
 
-              },
+                    },
+                  ),
+                  Checkbox(
+                    value: taskService.tasks[index].isCompleted,
+                    onChanged: (value) {
+
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
     );
   }
+
+
 }
