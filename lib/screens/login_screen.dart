@@ -18,7 +18,8 @@ class LoginScreen extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
       //UserService.getUserFromDb(data.name);
       user = UserService.getUserFromDb(data.name).then((value) => value);
-      if (user != null) {
+
+      if (UserService.control) {
         return 'Kullanıcı bulunamadı';
       }
       if (user.then((value) => value?.password) != data.password) {

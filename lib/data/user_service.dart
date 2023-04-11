@@ -35,9 +35,12 @@ class UserService {
     });
     UserService.control = false;
     return null;
-
   }
-  
+
+  static Future<bool?> getControl() async {
+    return control;
+  }
+
   static void addUserDb(User user) async {
     await _firestore.collection('users').add(user.mapUser());
   }
