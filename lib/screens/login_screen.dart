@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -17,15 +17,25 @@ class LoginScreen extends StatelessWidget {
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
+    bool control = true;
     return Future.delayed(loginTime).then((_) async {
+
       await userService.getUserFromDb(data.name);
-      if (userService.control) {
+
+      if (userService.control == false) {
+        control = false;
         return 'Kullanıcı bulunamadı';
       }
-      if (userService.user.password != data.password) {
+
+      if (userService.user?.password != data.password) {
+        control = false;
+        userService.user = null;
         return 'Şifre yanlış';
       }
-      getTasks();
+      if(control) {
+        getTasks();
+      }
+
       return null;
     });
   }
@@ -34,11 +44,11 @@ class LoginScreen extends StatelessWidget {
     return Future.delayed(loginTime).then((_) async {
       await userService.getUserFromDb(data.name!);
 
-      if (!userService.control) {
+      if (userService.control == true) {
         return 'Kullanıcı zaten var';
       }
-
-      userService.addUserDb(User(email: data.name!, password: data.password!));
+      List<dynamic> tasks = <dynamic>[];
+      userService.addUserDb(User(email: data.name!, password: data.password!, tasks: tasks));
 
       return null;
     });
@@ -67,6 +77,6 @@ class LoginScreen extends StatelessWidget {
 
   void getTasks() {
     print('---getTasks()');
-    taskService.getTasksFromDb(userService.user);
+    taskService.getTasksFromDb(userService.user!);
   }
 }

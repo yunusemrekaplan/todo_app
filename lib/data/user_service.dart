@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
 
 class UserService {
-  late User user;
+  late User? user;
   late bool control;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,16 +21,15 @@ class UserService {
   }
 
   Future<void> getUserFromDb(String email) async {
+    control = false;
     await _firestore.collection('users').get().then((querySnapshot) {
       for(var doc in querySnapshot.docs) {
         if(doc['email'] == email) {
           user = User.fromFirestore(doc);
           control =  true;
-          return user;
         }
       }
     });
-    control = false;
     return;
   }
 

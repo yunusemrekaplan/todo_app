@@ -6,18 +6,19 @@ class User {
   late String password;
   late List<dynamic> tasks;
 
-  User({required this.email, required this.password});
+  User({required this.email, required this.password, required this.tasks});
 
   User.fromFirestore(DocumentSnapshot snapshot) {
     Map? data = snapshot.data() as Map?;
 
     assert(data!['email'] != null);
     assert(data!['password'] != null);
+    assert(data!['tasks'] != null);
 
     id = snapshot.reference;
-    tasks = data!['tasks'];
-    email = data['email'];
+    email = data!['email'];
     password = data['password'];
+    tasks = data['tasks'];
   }
 
 

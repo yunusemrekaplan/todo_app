@@ -35,23 +35,22 @@ class TasksScreen extends StatelessWidget {
           return ListTile(
             title: Text(taskService.tasks[index].title),
             subtitle: Text(taskService.tasks[index].description),
-            trailing: Expanded(
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
 
-                    },
-                  ),
-                  Checkbox(
-                    value: taskService.tasks[index].isCompleted,
-                    onChanged: (value) {
+                  },
+                ),
+                Checkbox(
+                  value: taskService.tasks[index].isCompleted,
+                  onChanged: (value) {
 
-                    },
-                  ),
-                ],
-              ),
+                  },
+                ),
+              ],
             ),
           );
         },

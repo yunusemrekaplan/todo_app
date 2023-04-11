@@ -31,7 +31,7 @@ class _TodoAppState extends State {
         primarySwatch: Colors.green,
       ),
       routes: {
-        '/': (BuildContext context) => LoginScreen(),
+        '/': (BuildContext context) => const LoginScreen(),
       },
       initialRoute: '/',
     );
