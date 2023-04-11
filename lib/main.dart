@@ -1,7 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/screens/login_screen.dart';
+import 'package:todo_app/screens/task_info_screen.dart';
+import 'package:todo_app/screens/task_update_screen.dart';
+import 'package:todo_app/screens/tasks_screen.dart';
 
+import 'data/task_service.dart';
+import 'data/user_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,6 +27,8 @@ class TodoApp extends StatefulWidget {
 }
 
 class _TodoAppState extends State {
+  UserService userService = UserService();
+  TaskService taskService = TaskService();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +39,13 @@ class _TodoAppState extends State {
         primarySwatch: Colors.green,
       ),
       routes: {
-        '/': (BuildContext context) => const LoginScreen(),
+        '/': (BuildContext context) => LoginScreen(userService: userService, taskService: taskService),
+        'tasks': (BuildContext context) => TasksScreen(userService: userService, taskService: taskService),
+        'addTasks': (BuildContext context) => AddNewTaskScreen(),
+        'taskInfo': (BuildContext context) => TaskInfoScreen(),
+        'taskUpdate': (BuildContext context) => TaskUpdateScreen(),
       },
-      initialRoute: '/',
+      initialRoute: 'tasks',
     );
   }
 }

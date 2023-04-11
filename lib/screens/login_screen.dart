@@ -9,10 +9,10 @@ import 'package:todo_app/screens/tasks_screen.dart';
 
 
 class LoginScreen extends StatelessWidget {
-  static UserService userService = UserService();
-  static TaskService taskService = TaskService();
+  UserService userService = UserService();
+  TaskService taskService = TaskService();
 
-  const LoginScreen({super.key});
+  LoginScreen({super.key, required this.userService, required this.taskService});
 
   Duration get loginTime => const Duration(milliseconds: 2250);
 
@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
       onSignup: _createUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => TasksScreen(userService, taskService),
+          builder: (context) => TasksScreen(userService: userService, taskService: taskService),
         ));
       },
       onRecoverPassword: _recoverPassword,
