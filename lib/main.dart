@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/screens/login_screen.dart';
 import 'package:todo_app/screens/task_info_screen.dart';
 import 'package:todo_app/screens/task_update_screen.dart';
@@ -46,7 +45,7 @@ class _TodoAppState extends State {
         'taskInfo': (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: Task(title: 'Bulaşıkları Yıka', description: 'Evden çıkmadan bulaşıkları yıka', userRef: null),),
         'taskUpdate': (BuildContext context) => TaskUpdateScreen(userService: userService, taskService: taskService),
       },
-      initialRoute: 'tasks',
+      initialRoute: '/',
     );
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, no_logic_in_create_state
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../data/task_service.dart';
@@ -52,9 +53,9 @@ class _TaskInfoScreen extends State with TaskValidation {
 
   @override
   Widget build(BuildContext context) {
-    task.updateDate = DateTime.now();
+    task.updateDate = Timestamp.now();
     if(task.updateDate != null) {
-      subtitle = 'Güncelleme tarihi: ${task.updateDate!.day}/${task.updateDate!.month}/${task.updateDate!.year}';
+      subtitle = 'Güncelleme tarihi: ${task.updateDate!.toDate().day}/${task.updateDate!.toDate().month}/${task.updateDate!.toDate().year}';
     }
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +76,7 @@ class _TaskInfoScreen extends State with TaskValidation {
             : Text(initialText),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               setState(() {
                 _isEditingText = true;

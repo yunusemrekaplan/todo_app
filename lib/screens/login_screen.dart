@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:todo_app/data/task_service.dart';
@@ -7,10 +8,12 @@ import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/models/user.dart';
 import 'package:todo_app/screens/tasks_screen.dart';
 
+import '../models/task.dart';
+
 
 class LoginScreen extends StatelessWidget {
-  UserService userService = UserService();
-  TaskService taskService = TaskService();
+  late UserService userService;
+  late TaskService taskService;
 
   LoginScreen({super.key, required this.userService, required this.taskService});
 
@@ -19,7 +22,6 @@ class LoginScreen extends StatelessWidget {
   Future<String?> _authUser(LoginData data) async {
     bool control = true;
     return Future.delayed(loginTime).then((_) async {
-
       await userService.getUserFromDb(data.name);
 
       if (userService.control == false) {
@@ -47,7 +49,7 @@ class LoginScreen extends StatelessWidget {
       if (userService.control == true) {
         return 'Kullanıcı zaten var';
       }
-      List<dynamic> tasks = <dynamic>[];
+      List<DocumentReference> tasks = <DocumentReference>[];
       userService.addUserDb(User(email: data.name!, password: data.password!, tasks: tasks));
 
       return null;
@@ -62,6 +64,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    taskService.tasks = <Task>[];
     return FlutterLogin(
       title: 'ToDo',
       onLogin: _authUser,
@@ -76,7 +79,6 @@ class LoginScreen extends StatelessWidget {
   }
 
   void getTasks() {
-    print('---getTasks()');
     taskService.getTasksFromDb(userService.user!);
   }
 }

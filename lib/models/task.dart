@@ -4,8 +4,8 @@ class Task {
   late DocumentReference id;
   late String title;
   late String description;
-  late DateTime createDate;
-  late DateTime? updateDate;
+  late Timestamp createDate;
+  late Timestamp? updateDate;
   late bool isCompleted;
   late DocumentReference? userRef;
 
