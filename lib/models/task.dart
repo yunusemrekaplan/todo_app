@@ -4,8 +4,10 @@ class Task {
   late DocumentReference id;
   late String title;
   late String description;
+  late DateTime createDate;
+  late DateTime? updateDate;
   late bool isCompleted;
-  late DocumentReference userRef;
+  late DocumentReference? userRef;
 
   Task({required this.title, required this.description, this.isCompleted = false, required this.userRef});
 
@@ -16,10 +18,13 @@ class Task {
     assert(data!['description'] != null);
     assert(data!['isCompleted'] != null);
     assert(data!['userRef'] != null);
+    assert(data!['createDate'] != null);
 
     id = snapshot.reference;
     title = data!['title'];
     description = data['description'];
+    createDate = data['createDate'];
+    updateDate = data['updateDate'];
     isCompleted = data['isCompleted'];
     userRef = data['userRef'];
   }
@@ -29,6 +34,8 @@ class Task {
       'title' : title,
       'description' : description,
       'isCompleted' : isCompleted,
+      'createData' : createDate,
+      'updateData' : null,
       'userRef' : userRef,
     };
   }

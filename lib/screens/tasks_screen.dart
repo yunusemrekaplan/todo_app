@@ -77,7 +77,7 @@ class TasksScreen extends StatelessWidget {
     );
   }
 
-  buildNewTaskRow(BuildContext context) {
+  ElevatedButton buildNewTaskRow(BuildContext context) {
     return ElevatedButton(
       child: const Text("Yeni bir görev ekle"),
       onPressed: () {

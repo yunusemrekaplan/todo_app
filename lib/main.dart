@@ -9,6 +9,7 @@ import 'package:todo_app/screens/tasks_screen.dart';
 import 'data/task_service.dart';
 import 'data/user_service.dart';
 import 'firebase_options.dart';
+import 'models/task.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,9 +42,9 @@ class _TodoAppState extends State {
       routes: {
         '/': (BuildContext context) => LoginScreen(userService: userService, taskService: taskService),
         'tasks': (BuildContext context) => TasksScreen(userService: userService, taskService: taskService),
-        'addTasks': (BuildContext context) => AddNewTaskScreen(),
-        'taskInfo': (BuildContext context) => TaskInfoScreen(),
-        'taskUpdate': (BuildContext context) => TaskUpdateScreen(),
+        //'addTasks': (BuildContext context) => AddNewTaskScreen(userService: userService, taskService: taskService),
+        'taskInfo': (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: Task(title: 'Bulaşıkları Yıka', description: 'Evden çıkmadan bulaşıkları yıka', userRef: null),),
+        'taskUpdate': (BuildContext context) => TaskUpdateScreen(userService: userService, taskService: taskService),
       },
       initialRoute: 'tasks',
     );

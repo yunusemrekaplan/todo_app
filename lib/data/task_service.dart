@@ -6,7 +6,6 @@ import '../models/user.dart';
 
 class TaskService {
   List<Task> tasks = <Task>[];
-  late Task task;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final TaskService _singleton = TaskService._internal();
