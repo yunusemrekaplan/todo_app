@@ -1,10 +1,9 @@
 // ignore_for_file: must_be_immutable, avoid_web_libraries_in_flutter, no_logic_in_create_state
 
-import 'package:flutter/material.dart';
+import'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
-import 'package:todo_app/data/widgets/task_screen_column.dart';
-
+import '../widgets/task_screen_column.dart';
 import 'login_screen.dart';
 
 

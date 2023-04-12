@@ -2,10 +2,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:todo_app/data/task_service.dart';
-import 'package:todo_app/data/widgets/new_task_button.dart';
-import 'package:todo_app/data/widgets/task_rows.dart';
+import 'package:todo_app/widgets/task_rows.dart';
 
-import '../user_service.dart';
+import '../data/user_service.dart';
+import 'new_task_button.dart';
 
 class TaskScreenColumn extends StatefulWidget {
   late TaskService taskService;
