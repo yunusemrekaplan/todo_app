@@ -56,4 +56,8 @@ class TaskService {
       print(e.toString());
     }
   }
+
+  void updateTask(Task task) async {
+    await _firestore.collection('tasks').doc(task.id.id).update(task.mapTask());
+  }
 }

@@ -3,30 +3,32 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
+import 'package:todo_app/screens/task_info_screen.dart';
 
-class TaskRows extends StatefulWidget {
+class TasksScreenTaskRow extends StatefulWidget {
   late TaskService taskService;
   late UserService userService;
 
   late int index;
 
-  TaskRows({super.key, required this.taskService, required this.userService, required this.index});
+  TasksScreenTaskRow({super.key, required this.taskService, required this.userService, required this.index});
 
   @override
-  State<StatefulWidget> createState() => _TaskRowsState(taskService: taskService, userService: userService, index: index);
+  State<StatefulWidget> createState() => _TasksScreenTaskRowState(taskService: taskService, userService: userService, index: index);
 
 }
 
-class _TaskRowsState extends State {
+class _TasksScreenTaskRowState extends State {
   late TaskService taskService;
   late UserService userService;
 
   late int index;
 
-  _TaskRowsState({required this.taskService, required this.userService, required this.index});
+  _TasksScreenTaskRowState({required this.taskService, required this.userService, required this.index});
 
   @override
   Widget build(BuildContext context) {
+
     return ListTile(
       title: Text(taskService.tasks![index].title),//Text(taskService.tasks[index].title),
       subtitle: Text(taskService.tasks![index].description),//Text(taskService.tasks[index].description),
@@ -38,6 +40,8 @@ class _TaskRowsState extends State {
             onPressed: () {
               setState(() {
                 taskService.deleteTask(userService.user!, taskService.tasks![index]);
+                taskService.tasks;
+                build(context);
               });
             },
           ),
@@ -46,14 +50,14 @@ class _TaskRowsState extends State {
             onChanged: (value) {
               setState(() {
                 taskService.tasks![index].isCompleted = taskService.tasks![index].isCompleted == true ? false : true;
-                context;
+                taskService.updateTask(taskService.tasks![index]);
               });
             },
           ),
         ],
       ),
       onTap: () {
-        Navigator.pushNamed(context, 'taskInfo');
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: taskService.tasks![index])));
       },
     );
   }

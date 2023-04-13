@@ -3,8 +3,8 @@
 import'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
-import '../widgets/task_screen_column.dart';
-import 'login_screen.dart';
+import 'package:todo_app/widgets/tasks_screen_widgets/tasks_screen_back_button.dart';
+import '../widgets/tasks_screen_widgets/tasks_screen_column.dart';
 
 
 class TasksScreen extends StatefulWidget {
@@ -31,24 +31,13 @@ class _TasksScreenState extends State {
       appBar: AppBar(
         title: const Text('Görev Listesi'),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          buildBackButton(),
+        actions: const <Widget>[
+          TasksScreenBackButton(),
         ],
       ),
-      body: TaskScreenColumn(taskService: taskService, userService: userService,),
+      body: TasksScreenColumn(taskService: taskService, userService: userService,),
     );
   }
 
-
-  IconButton buildBackButton() {
-    return IconButton(
-      icon: const Icon(Icons.exit_to_app),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => LoginScreen(userService: UserService(), taskService: TaskService()),
-        ));
-      },
-    );
-  }
 
 }

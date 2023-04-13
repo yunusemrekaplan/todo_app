@@ -1,7 +1,9 @@
 // ignore_for_file: must_be_immutable, no_logic_in_create_state
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/tasks_screen.dart';
+import 'package:todo_app/widgets/task_info_screen_widgets/task_info_screen_created_date_widget.dart';
+import 'package:todo_app/widgets/task_info_screen_widgets/task_info_screen_task_text.dart';
 
 import '../data/task_service.dart';
 import '../data/user_service.dart';
@@ -27,69 +29,29 @@ class _TaskInfoScreen extends State with TaskValidation {
 
   _TaskInfoScreen({required this.userService, required this.taskService, required this.task});
 
-  DateTime createDate = DateTime.now();
-
-  String subtitle = '';
-
-
-  late TextEditingController _editingController;
-  late FocusNode _focusNode;
-  bool _isEditingText = false;
-  String initialText = "Bulaşıkları Yıka";
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _editingController = TextEditingController(text: initialText);
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _editingController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    task.updateDate = Timestamp.now();
-    if(task.updateDate != null) {
-      subtitle = 'Güncelleme tarihi: ${task.updateDate!.toDate().day}/${task.updateDate!.toDate().month}/${task.updateDate!.toDate().year}';
-    }
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: _isEditingText
-            ? TextField(
-          focusNode: _focusNode,
-          autofocus: true,
-          controller: _editingController,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (value) {
-            setState(() {
-              initialText = value;
-              _isEditingText = false;
-            });
-          },
-        )
-            : Text(initialText),
+        title: Text(
+          task.title.toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
+            icon: const Icon(Icons.delete),
             onPressed: () {
+              deleteTask(task);
               setState(() {
-                _isEditingText = true;
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TasksScreen(userService: userService, taskService: taskService)));
               });
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {},
+          ),
         ],
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_outlined),
-          onPressed: () {
-            Navigator.popAndPushNamed(context, 'tasks');
-          },
-        ),
       ),
       backgroundColor: Colors.white,
       body: buildPage(),
@@ -99,38 +61,17 @@ class _TaskInfoScreen extends State with TaskValidation {
   Column buildPage() {
     return Column(
       children: [
-        buildCreateDateWidget(),
+        TaskInfoScreenCreatedDateWidget(task: task,),
         const SizedBox(
           height: 15.0,
         ),
-        buildTaskText(),
+        TaskInfoScreenTaskText(task: task,),
       ],
     );
   }
 
-  Padding buildCreateDateWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueGrey),
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.blueGrey,
-        ),
-        child: Card(
-          color: Colors.blueGrey,
-          child: Text('${createDate.day}/${createDate.month}/${createDate.year}', style: TextStyle(color: Colors.white, fontSize: (MediaQuery.of(context).size.width / 25)),),
-        ),
-      ),
-    );
+  void deleteTask(Task task) {
+    taskService.deleteTask(userService.user!, task);
   }
-
-  ListTile buildTaskText() {
-    return ListTile(
-      minLeadingWidth: (MediaQuery.of(context).size.width / 20),
-      title: Text('Evden çıkmadan önce bulaşıkları yıka', style: TextStyle(fontSize: (MediaQuery.of(context).size.width / 20), color: Colors.black),),
-      subtitle: Text(subtitle, style: TextStyle(fontSize: (MediaQuery.of(context).size.width / 30))),
-    );
-  }
-
 }
+
