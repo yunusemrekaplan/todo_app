@@ -4,6 +4,7 @@ import'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/widgets/tasks_screen_widgets/tasks_screen_back_button.dart';
+import '../models/task.dart';
 import '../widgets/tasks_screen_widgets/tasks_screen_column.dart';
 
 
@@ -25,6 +26,16 @@ class _TasksScreenState extends State {
   _TasksScreenState({required this.userService, required this.taskService});
 
   @override
+  void initState() {
+    /*if(task != null) {
+      taskService.tasks?.remove(task);
+    }*/
+    //getTasks();
+    userService.setTasks(taskService.tasks);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //double screenHeight = (MediaQuery.of(context).size.height);
     return Scaffold(
@@ -38,6 +49,4 @@ class _TasksScreenState extends State {
       body: TasksScreenColumn(taskService: taskService, userService: userService,),
     );
   }
-
-
 }

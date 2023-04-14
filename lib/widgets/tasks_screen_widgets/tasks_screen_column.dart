@@ -5,6 +5,7 @@ import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/widgets/tasks_screen_widgets/tasks_screen_task_rows.dart';
 
 import '../../data/user_service.dart';
+import '../../models/task.dart';
 import 'tasks_screen_new_task_button.dart';
 
 class TasksScreenColumn extends StatefulWidget {
@@ -22,6 +23,12 @@ class _TasksScreenColumnState extends State {
   late UserService userService;
 
   _TasksScreenColumnState({required this.taskService, required this.userService});
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -15,11 +15,15 @@ class TaskInfoScreen extends StatefulWidget {
   late TaskService taskService;
   late Task task;
 
-  TaskInfoScreen({super.key, required this.userService, required this.taskService, required this.task});
+  TaskInfoScreen(
+      {super.key,
+      required this.userService,
+      required this.taskService,
+      required this.task});
 
   @override
-  State<StatefulWidget> createState() => _TaskInfoScreen(userService: userService, taskService: taskService, task: task);
-
+  State<StatefulWidget> createState() => _TaskInfoScreen(
+      userService: userService, taskService: taskService, task: task);
 }
 
 class _TaskInfoScreen extends State with TaskValidation {
@@ -27,7 +31,10 @@ class _TaskInfoScreen extends State with TaskValidation {
   late TaskService taskService;
   late Task task;
 
-  _TaskInfoScreen({required this.userService, required this.taskService, required this.task});
+  _TaskInfoScreen(
+      {required this.userService,
+      required this.taskService,
+      required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +46,40 @@ class _TaskInfoScreen extends State with TaskValidation {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              deleteTask(task);
-              setState(() {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TasksScreen(userService: userService, taskService: taskService)));
-              });
-            },
-          ),
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(task.title),
+                        content: const Text('Görevi silmek mi istiyorsunuz?'),
+                        actions: [
+                          TextButton(
+                            child: const Text('Evet'),
+                            onPressed: () {
+                                deleteTask(task);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            TasksScreen(
+                                              userService: userService,
+                                              taskService: taskService,
+                                            )));
+
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Hayır'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    });
+              }),
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {},
@@ -61,17 +94,21 @@ class _TaskInfoScreen extends State with TaskValidation {
   Column buildPage() {
     return Column(
       children: [
-        TaskInfoScreenCreatedDateWidget(task: task,),
+        TaskInfoScreenCreatedDateWidget(
+          task: task,
+        ),
         const SizedBox(
           height: 15.0,
         ),
-        TaskInfoScreenTaskText(task: task,),
+        TaskInfoScreenTaskText(
+          task: task,
+        ),
       ],
     );
   }
 
   void deleteTask(Task task) {
     taskService.deleteTask(userService.user!, task);
+    userService.setTasks(taskService.tasks);
   }
 }
-

@@ -5,10 +5,11 @@ import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/screens/task_info_screen.dart';
 
+import '../../models/task.dart';
+
 class TasksScreenTaskRow extends StatefulWidget {
   late TaskService taskService;
   late UserService userService;
-
   late int index;
 
   TasksScreenTaskRow({super.key, required this.taskService, required this.userService, required this.index});
@@ -21,7 +22,6 @@ class TasksScreenTaskRow extends StatefulWidget {
 class _TasksScreenTaskRowState extends State {
   late TaskService taskService;
   late UserService userService;
-
   late int index;
 
   _TasksScreenTaskRowState({required this.taskService, required this.userService, required this.index});
@@ -30,26 +30,16 @@ class _TasksScreenTaskRowState extends State {
   Widget build(BuildContext context) {
 
     return ListTile(
-      title: Text(taskService.tasks![index].title),//Text(taskService.tasks[index].title),
-      subtitle: Text(taskService.tasks![index].description),//Text(taskService.tasks[index].description),
+      title: Text(userService.tasks![index].title),//Text(taskService.tasks[index].title),
+      subtitle: Text(userService.tasks![index].description),//Text(taskService.tasks[index].description),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              setState(() {
-                taskService.deleteTask(userService.user!, taskService.tasks![index]);
-                taskService.tasks;
-                build(context);
-              });
-            },
-          ),
           Checkbox(
-            value: taskService.tasks![index].isCompleted,//taskService.tasks[index].isCompleted,
+            value: userService.tasks![index].isCompleted,//taskService.tasks[index].isCompleted,
             onChanged: (value) {
               setState(() {
-                taskService.tasks![index].isCompleted = taskService.tasks![index].isCompleted == true ? false : true;
+                userService.tasks![index].isCompleted = userService.tasks![index].isCompleted == true ? false : true;
                 taskService.updateTask(taskService.tasks![index]);
               });
             },
@@ -57,7 +47,7 @@ class _TasksScreenTaskRowState extends State {
         ],
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: taskService.tasks![index])));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: userService.tasks![index],)));
       },
     );
   }

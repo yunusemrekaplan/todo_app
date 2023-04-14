@@ -9,7 +9,7 @@ class Task {
   late bool isCompleted;
   late DocumentReference? userRef;
 
-  Task({required this.title, required this.description, this.isCompleted = false, required this.userRef});
+  Task({required this.title, required this.description, this.isCompleted = false, required this.createDate,required this.userRef});
 
   Task.fromFirestore(DocumentSnapshot snapshot) {
     Map? data = snapshot.data() as Map?;
@@ -34,8 +34,8 @@ class Task {
       'title' : title,
       'description' : description,
       'isCompleted' : isCompleted,
-      'createData' : createDate,
-      'updateData' : null,
+      'createDate' : createDate,
+      'updateDate' : null,
       'userRef' : userRef,
     };
   }

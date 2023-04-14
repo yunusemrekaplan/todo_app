@@ -6,7 +6,6 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/models/user.dart';
-import 'package:todo_app/screens/tasks_screen.dart';
 
 import '../models/task.dart';
 
@@ -70,9 +69,7 @@ class LoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _createUser,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => TasksScreen(userService: userService, taskService: taskService),
-        ));
+        Navigator.pushNamed(context, 'tasks');
       },
       onRecoverPassword: _recoverPassword,
     );
@@ -80,5 +77,6 @@ class LoginScreen extends StatelessWidget {
 
   void getTasks() {
     taskService.getTasksFromDb(userService.user!);
+    userService.setTasks(taskService.tasks!);
   }
 }

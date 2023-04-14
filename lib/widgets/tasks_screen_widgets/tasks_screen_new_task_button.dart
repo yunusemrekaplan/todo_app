@@ -28,7 +28,7 @@ class _NewTaskButtonState extends State {
     return ElevatedButton(
       child: const Text("Yeni bir görev ekle"),
       onPressed: () {
-        Navigator.popAndPushNamed(context, 'addTask');
+        Navigator.pushNamed(context, 'addTasks');
       },
     );
   }

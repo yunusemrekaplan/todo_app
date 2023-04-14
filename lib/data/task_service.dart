@@ -16,7 +16,7 @@ class TaskService {
 
   TaskService._internal();
 
-  void getTasksFromDb(User user) async {
+  Future<void> getTasksFromDb(User user) async {
     await _firestore.collection('tasks').get().then((querySnapshot) {
       for(var doc in querySnapshot.docs) {
         print('---for');
@@ -33,7 +33,8 @@ class TaskService {
     try {
       DocumentReference taskRef = await _firestore.collection('tasks').add(task.mapTask());
       user.tasks.add(taskRef);
-      await _firestore.collection('users').doc(user.id.path).update({'tasks': taskRef});
+      await _firestore.collection('users').doc(user.id.id).update({'tasks': user.tasks});
+      tasks!.add(task);
     } on Exception catch (e) {
       print('addTask');
       print(e.toString());
@@ -42,15 +43,10 @@ class TaskService {
   
   void deleteTask(User user, Task task) async {
     try {
-      print('1---deleteTask');
+      tasks?.remove(task);
       //await _firestore.collection('tasks').doc(task.id.id).delete();
-      print('tasks/${task.id.path}');
-      print('2---deleteTask');
-      print(user.tasks.length);
       user.tasks.remove(task.id);
-      print(user.tasks.length);
       await _firestore.collection('users').doc(user.id.id).update(user.mapUser());
-      print('3---deleteTask');
     } on Exception catch (e) {
       print('4---deleteTask');
       print(e.toString());
@@ -60,4 +56,7 @@ class TaskService {
   void updateTask(Task task) async {
     await _firestore.collection('tasks').doc(task.id.id).update(task.mapTask());
   }
+
+
+
 }

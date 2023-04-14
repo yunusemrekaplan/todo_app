@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/task.dart';
 import '../models/user.dart';
 
 class UserService {
   late User? user;
   late bool control;
+  late List<Task>? tasks;
+  late int length;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final UserService _singleton = UserService._internal();
@@ -35,5 +38,10 @@ class UserService {
 
   void addUserDb(User user) async {
     await _firestore.collection('users').add(user.mapUser());
+  }
+
+  void setTasks(List<Task>? tasks) {
+    this.tasks = tasks;
+    length = tasks!.length;
   }
 }
