@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/task.dart';
@@ -6,8 +8,8 @@ import '../models/user.dart';
 class UserService {
   late User? user;
   late bool control;
-  late List<Task>? tasks;
-  late int length;
+  List<Task> tasks= <Task>[];
+  int length = 0;
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final UserService _singleton = UserService._internal();
@@ -37,11 +39,28 @@ class UserService {
   }
 
   void addUserDb(User user) async {
+    this.user = user;
     await _firestore.collection('users').add(user.mapUser());
   }
 
   void setTasks(List<Task>? tasks) {
-    this.tasks = tasks;
-    length = tasks!.length;
+    this.tasks = tasks!;
+    length = tasks.length;
+  }
+
+  List<Task>? getTask() {
+    return tasks;
+  }
+
+  void removeTask(Task task) async {
+    print('başlık: ${task.title}');
+    DocumentReference id = task.id;
+    tasks.remove(task);
+    user!.tasks.remove(id);
+    await _firestore.collection('users').doc(user!.id.id).update({'tasks': user!.tasks});
+  }
+
+  void addTask(Task task) {
+    tasks.add(task);
   }
 }

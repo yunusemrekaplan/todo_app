@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     taskService.tasks = <Task>[];
     return FlutterLogin(
-      title: 'ToDo',
+      title: 'TODO',
       onLogin: _authUser,
       onSignup: _createUser,
       onSubmitAnimationCompleted: () {
@@ -75,7 +75,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void getTasks() {
+  void getTasks() async {
     taskService.getTasksFromDb(userService.user!);
     userService.setTasks(taskService.tasks!);
   }

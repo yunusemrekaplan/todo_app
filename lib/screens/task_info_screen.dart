@@ -13,7 +13,7 @@ import '../validators/task_validation.dart';
 class TaskInfoScreen extends StatefulWidget {
   late UserService userService;
   late TaskService taskService;
-  late Task task;
+  late Task? task;
 
   TaskInfoScreen(
       {super.key,
@@ -23,7 +23,7 @@ class TaskInfoScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _TaskInfoScreen(
-      userService: userService, taskService: taskService, task: task);
+      userService: userService, taskService: taskService, task: task!);
 }
 
 class _TaskInfoScreen extends State with TaskValidation {
@@ -80,10 +80,10 @@ class _TaskInfoScreen extends State with TaskValidation {
                       );
                     });
               }),
-          IconButton(
+          /*IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {},
-          ),
+          ),*/
         ],
       ),
       backgroundColor: Colors.white,
@@ -107,8 +107,8 @@ class _TaskInfoScreen extends State with TaskValidation {
     );
   }
 
-  void deleteTask(Task task) {
-    taskService.deleteTask(userService.user!, task);
-    userService.setTasks(taskService.tasks);
+  void deleteTask(Task task) async {
+    userService.removeTask(task);
+    taskService.deleteTask(task);
   }
 }

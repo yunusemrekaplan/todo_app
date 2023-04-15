@@ -15,6 +15,7 @@ class Task {
     Map? data = snapshot.data() as Map?;
 
     assert(data!['title'] != null);
+    assert(data!['title'] != null);
     assert(data!['description'] != null);
     assert(data!['isCompleted'] != null);
     assert(data!['userRef'] != null);

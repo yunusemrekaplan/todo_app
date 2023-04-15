@@ -4,7 +4,6 @@ import'package:flutter/material.dart';
 import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/widgets/tasks_screen_widgets/tasks_screen_back_button.dart';
-import '../models/task.dart';
 import '../widgets/tasks_screen_widgets/tasks_screen_column.dart';
 
 
@@ -27,11 +26,9 @@ class _TasksScreenState extends State {
 
   @override
   void initState() {
-    /*if(task != null) {
-      taskService.tasks?.remove(task);
-    }*/
-    //getTasks();
-    userService.setTasks(taskService.tasks);
+    //taskService.tasks = userService.tasks;
+    print('taskService tasks length: ${taskService.tasks!.length}');
+    print('userService tasks length: ${userService.tasks.length}');
     super.initState();
   }
 

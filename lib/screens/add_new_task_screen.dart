@@ -24,8 +24,8 @@ class AddNewTaskScreen extends StatefulWidget {
 class _AddNewTaskScreen extends State with TaskValidation {
   late UserService userService;
   late TaskService taskService;
-  late String title;
-  late String description;
+  String title = '';
+  String description = '';
   late Timestamp createDate;
 
   _AddNewTaskScreen({required this.userService, required this.taskService});
@@ -66,10 +66,10 @@ class _AddNewTaskScreen extends State with TaskValidation {
           height: 130,
           child: buildDescriptionTextField(),
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
-          child: buildSaveButton(context),
         ),
+        buildSaveButton(context)
       ],
     );
   }
@@ -131,36 +131,39 @@ class _AddNewTaskScreen extends State with TaskValidation {
   }
 
   ElevatedButton buildSaveButton(BuildContext context) {
-    int count = 0;
     return ElevatedButton(
       child: const Text('Kaydet'),
       onPressed: () {
         //TODO showalert kullanarak title ve description değişkenlerini kontrol et.
         print('tıklandı');
-        if(count == 0) {
+        if(title == '' || description == '') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Lütfen başlık ve açıklama bölümlerini boş bırakmayınız!!!'),
+                actions: [
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Tamam')),
+                ],
+              );
+            }
+          );
+        }
+        else {
           createDate = Timestamp.fromDate(DateTime.now());
           Task task = Task(title: title, description: description, createDate: createDate, userRef: userService.user!.id);
-          taskService.addTask(userService.user!, task);
-          userService.setTasks(taskService.tasks);
-          //TODO delay yerine showalert kullan.
-          Future.delayed(Duration(milliseconds: 1100), () {
-            Navigator.pushNamed(context, 'tasks');
-          });
-          count += 1;
+          userService.addTask(task);
+          taskService.addTask(userService.user!, task, userService.tasks);
+          /*userService.setTasks(taskService.tasks);*/
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      TasksScreen(
+                        userService: userService,
+                        taskService: taskService,
+                      )));
         }
-        /*
-        createDate = Timestamp.fromDate(DateTime.now());
-        Task task = Task(title: title, description: description, createDate: createDate, userRef: userService.user!.id);
-        taskService.addTask(userService.user!, task);
-        userService.setTasks(taskService.tasks);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    TasksScreen(
-                      userService: userService,
-                      taskService: taskService,
-                    )));*/
       },
     );
   }

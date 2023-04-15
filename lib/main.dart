@@ -2,13 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/screens/login_screen.dart';
-import 'package:todo_app/screens/task_update_screen.dart';
+import 'package:todo_app/screens/task_info_screen.dart';
 import 'package:todo_app/screens/tasks_screen.dart';
 
 import 'data/task_service.dart';
 import 'data/user_service.dart';
 import 'firebase_options.dart';
-import 'models/task.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,8 +41,8 @@ class _TodoAppState extends State {
         '/': (BuildContext context) => LoginScreen(userService: userService, taskService: taskService),
         'tasks': (BuildContext context) => TasksScreen(userService: userService, taskService: taskService),
         'addTasks': (BuildContext context) => AddNewTaskScreen(userService: userService, taskService: taskService),
-        //'taskInfo': (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService,),
-        'taskUpdate': (BuildContext context) => TaskUpdateScreen(userService: userService, taskService: taskService),
+        'taskInfo': (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: null,),
+        //'taskUpdate': (BuildContext context) => TaskUpdateScreen(userService: userService, taskService: taskService, task: null,),
       },
       initialRoute: '/',
     );

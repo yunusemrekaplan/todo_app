@@ -5,7 +5,6 @@ import 'package:todo_app/data/task_service.dart';
 import 'package:todo_app/data/user_service.dart';
 import 'package:todo_app/screens/task_info_screen.dart';
 
-import '../../models/task.dart';
 
 class TasksScreenTaskRow extends StatefulWidget {
   late TaskService taskService;
@@ -28,18 +27,37 @@ class _TasksScreenTaskRowState extends State {
 
   @override
   Widget build(BuildContext context) {
-
+    /*
+    String title = userService.tasks[index].title;
+    int sizeTitle = title.length;
+    if(sizeTitle > 20) {
+      title += '...';
+      sizeTitle = 53;
+    }
+    else {
+      sizeTitle = title.length;
+    }
+    String subtitle = userService.tasks[index].description;
+    int sizeSubtitle = subtitle.length;
+    if(sizeSubtitle > 50) {
+      subtitle += '...';
+      sizeSubtitle = 53;
+    }
+    else {
+      sizeSubtitle = subtitle.length;
+    }
+     */
     return ListTile(
-      title: Text(userService.tasks![index].title),//Text(taskService.tasks[index].title),
-      subtitle: Text(userService.tasks![index].description),//Text(taskService.tasks[index].description),
+      title: Text(userService.tasks[index].title),//Text(taskService.tasks[index].title),
+      subtitle: Text(userService.tasks[index].description),//Text(taskService.tasks[index].description),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Checkbox(
-            value: userService.tasks![index].isCompleted,//taskService.tasks[index].isCompleted,
+            value: userService.tasks[index].isCompleted,//taskService.tasks[index].isCompleted,
             onChanged: (value) {
               setState(() {
-                userService.tasks![index].isCompleted = userService.tasks![index].isCompleted == true ? false : true;
+                userService.tasks[index].isCompleted = userService.tasks[index].isCompleted == true ? false : true;
                 taskService.updateTask(taskService.tasks![index]);
               });
             },
@@ -47,7 +65,7 @@ class _TasksScreenTaskRowState extends State {
         ],
       ),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: userService.tasks![index],)));
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TaskInfoScreen(userService: userService, taskService: taskService, task: userService.tasks[index],)));
       },
     );
   }

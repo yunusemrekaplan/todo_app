@@ -5,7 +5,6 @@ import 'package:todo_app/widgets/tasks_screen_widgets/tasks_screen_task_row.dart
 
 import '../../data/task_service.dart';
 import '../../data/user_service.dart';
-import '../../models/task.dart';
 
 class TasksScreenTaskRows extends StatefulWidget {
   late TaskService taskService;
@@ -33,9 +32,9 @@ class _TasksScreenTaskRowsState extends State {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: ((userService.tasks!.length + 3) * 48 + 10),
+      height: (MediaQuery.of(context).size.height - 200),
       child: ListView.builder(
-        itemCount: userService.tasks!.length,
+        itemCount: userService.tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return TasksScreenTaskRow(taskService: taskService, userService: userService, index: index,);
         },

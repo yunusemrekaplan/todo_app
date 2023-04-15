@@ -19,34 +19,41 @@ class TaskService {
   Future<void> getTasksFromDb(User user) async {
     await _firestore.collection('tasks').get().then((querySnapshot) {
       for(var doc in querySnapshot.docs) {
-        print('---for');
         if(user.tasks.contains(doc.reference)) {
-          print('---if');
           tasks!.add(Task.fromFirestore(doc));
         }
       }
-      print(tasks!.length);
     });
   }
   
-  void addTask(User user, Task task) async {
+  void addTask(User user, Task task, List<Task> tasksUser) async {
     try {
       DocumentReference taskRef = await _firestore.collection('tasks').add(task.mapTask());
+      late DocumentSnapshot taskSnap;
+      await _firestore.collection('tasks').get().then((value) {
+        for(var doc in value.docs) {
+          if(doc.reference == taskRef) {
+            taskSnap = doc;
+            break;
+          }
+        }
+      });
+      tasksUser.last = Task.fromFirestore(taskSnap);
       user.tasks.add(taskRef);
       await _firestore.collection('users').doc(user.id.id).update({'tasks': user.tasks});
-      tasks!.add(task);
+      //tasks!.add(task);
     } on Exception catch (e) {
       print('addTask');
       print(e.toString());
     }
   }
   
-  void deleteTask(User user, Task task) async {
+  void deleteTask(Task task) async {
     try {
+      DocumentReference id = task.id;
       tasks?.remove(task);
-      //await _firestore.collection('tasks').doc(task.id.id).delete();
-      user.tasks.remove(task.id);
-      await _firestore.collection('users').doc(user.id.id).update(user.mapUser());
+      await _firestore.collection('tasks').doc(id.id).delete();
+
     } on Exception catch (e) {
       print('4---deleteTask');
       print(e.toString());
