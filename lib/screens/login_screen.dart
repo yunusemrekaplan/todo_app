@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:todo_app/data/task_service.dart';
@@ -48,7 +47,7 @@ class LoginScreen extends StatelessWidget {
       if (userService.control == true) {
         return 'Kullanıcı zaten var';
       }
-      List<DocumentReference> tasks = <DocumentReference>[];
+      List<dynamic> tasks = <dynamic>[];
       userService.addUserDb(User(email: data.name!, password: data.password!, tasks: tasks));
 
       return null;

@@ -39,8 +39,17 @@ class UserService {
   }
 
   void addUserDb(User user) async {
-    this.user = user;
-    await _firestore.collection('users').add(user.mapUser());
+    DocumentReference userRef = await _firestore.collection('users').add(user.mapUser());
+    await _firestore.collection('users').get().then((value) {
+      for(var doc in value.docs) {
+        if(doc.reference == userRef) {
+          user = User.fromFirestore(doc);
+          this.user = user;
+          break;
+        }
+      }
+    });
+
   }
 
   void setTasks(List<Task>? tasks) {
